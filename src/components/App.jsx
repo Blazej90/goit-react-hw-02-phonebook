@@ -7,29 +7,30 @@ export const App = () => {
   const [state, setState] = useState({
     contacts: [],
     name: '',
+    number: '',
   });
 
-  const handleNameChange = event => {
-    const regex = /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŹŻ' -]+$/;
-    const inputValue = event.target.value;
-    if (regex.test(inputValue) || inputValue === '') {
-      setState(prevState => ({
-        ...prevState,
-        name: inputValue,
-      }));
-    }
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+
+    setState(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   const handleAddContact = () => {
-    if (state.name.trim() !== '') {
+    if (state.name.trim() !== '' && state.number.trim() !== '') {
       const newContact = {
         id: nanoid(),
         name: state.name,
+        number: state.number,
       };
 
       setState(prevState => ({
         contacts: [...prevState.contacts, newContact],
         name: '',
+        number: '',
       }));
     }
   };
@@ -46,7 +47,20 @@ export const App = () => {
           title="Name may contain only letters, apostrophe, dash, spaces, and Polish characters (ą, ę, ł, ó, ś, ż, ź, ć, ń)"
           required
           value={state.name}
-          onChange={handleNameChange}
+          onChange={handleInputChange}
+          className={styles.input}
+        />
+      </label>
+      <p className={styles.name}>Phone Number</p>
+      <label className={styles.labelNumber}>
+        <input
+          type="tel"
+          name="number"
+          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+          required
+          value={state.number}
+          onChange={handleInputChange}
           className={styles.input}
         />
       </label>
@@ -60,7 +74,7 @@ export const App = () => {
         <ul className={styles.contactList}>
           {state.contacts.map(contact => (
             <li key={contact.id} className={styles.contactItem}>
-              {contact.name}
+              {contact.name} - {contact.number}
             </li>
           ))}
         </ul>
