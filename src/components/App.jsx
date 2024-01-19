@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
-
-import styles from './App.module.css';
 import ContactForm from './ContactForm';
 import ContactList from './ContactList';
-
 import Filter from './Filter';
+
+import styles from './App.module.css';
 
 const App = () => {
   const initialContacts = [
@@ -53,6 +52,13 @@ const App = () => {
     }
   };
 
+  const handleDeleteContact = id => {
+    setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== id),
+      filter: prevState.filter,
+    }));
+  };
+
   const handleFilterChange = event => {
     const filterValue = event.target.value.toLowerCase();
     setState(prevState => ({ ...prevState, filter: filterValue }));
@@ -76,6 +82,7 @@ const App = () => {
       <Filter filter={state.filter} handleFilterChange={handleFilterChange} />
       <ContactList
         contacts={state.filter ? filteredContacts : state.contacts}
+        handleDeleteContact={handleDeleteContact}
       />
     </div>
   );

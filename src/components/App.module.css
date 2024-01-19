@@ -1,5 +1,5 @@
 .appContainer {
-  /* height: 100vh; */
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,7 +9,7 @@
 .pageTitle {
   margin: 0;
   padding-top: 30px;
-  padding-bottom: 150px;
+  padding-bottom: 80px;
 }
 
 .name {
@@ -23,4 +23,13 @@
   margin-top: 15px;
   border-radius: 5px;
   margin-bottom: 10px;
+}
+
+.contactItem {
+  margin-bottom: 10px;
+}
+
+.deleteBtn {
+  margin-left: 5px;
+  border-radius: 5px;
 }
