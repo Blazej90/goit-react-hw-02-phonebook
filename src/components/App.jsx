@@ -4,8 +4,16 @@ import { nanoid } from 'nanoid';
 import styles from './App.module.css';
 
 export const App = () => {
+  const initialContacts = [
+    { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+    { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+    { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+    { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+  ];
+
   const [state, setState] = useState({
-    contacts: [],
+    contacts: [...initialContacts],
+    filter: '',
     name: '',
     number: '',
   });
@@ -34,6 +42,20 @@ export const App = () => {
       }));
     }
   };
+
+  const handleFilterChange = event => {
+    const filterValue = event.target.value.toLowerCase();
+    setState(prevState => ({
+      ...prevState,
+      filter: filterValue,
+    }));
+  };
+
+  const filteredContacts = state.contacts.filter(contact =>
+    contact.name.toLowerCase().includes(state.filter)
+  );
+
+  const displayedContacts = state.filter ? filteredContacts : state.contacts;
 
   return (
     <div className={styles.appContainer}>
@@ -71,8 +93,16 @@ export const App = () => {
 
       <div>
         <h2 className={styles.contactsHeading}>Contacts</h2>
+        <p>Find contacts by name</p>
+        <input
+          type="text"
+          name="filter"
+          value={state.filter}
+          onChange={handleFilterChange}
+          className={styles.input}
+        />
         <ul className={styles.contactList}>
-          {state.contacts.map(contact => (
+          {displayedContacts.map(contact => (
             <li key={contact.id} className={styles.contactItem}>
               {contact.name} - {contact.number}
             </li>
